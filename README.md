@@ -4,7 +4,7 @@ A private, local-first study studio for Columbia Music Humanities. It uses Spoti
 
 ## Run locally
 
-1. Install Node.js 20 or newer.
+1. Install Node.js 24 or newer.
 2. Copy `.env.example` to `.env`.
 3. Add your Spotify Client ID to `VITE_SPOTIFY_CLIENT_ID`.
 4. Run `npm install`, then `npm run dev`.
@@ -34,17 +34,18 @@ The regular Study Set export produces two spreadsheet-friendly CSV files: `Piece
 
 Run `npm test` for the deterministic study-engine tests and `npm run build` for a production build.
 
-## GitHub later
+## GitHub Pages
 
-From this project folder:
+The hosted site is https://esabramowitz.github.io/Music-hum-study-website/.
 
-```bash
-git init
-git add .
-git commit -m "Initial Music Humanities study app"
-git branch -M main
-git remote add origin https://github.com/YOUR-ACCOUNT/music-humanities-study.git
-git push -u origin main
-```
+The Pages workflow runs tests, builds the site, and deploys the generated dist folder after each push to main. GitHub Pages should use GitHub Actions as its publishing source. The production asset base is /Music-hum-study-website/; local development stays at /.
 
-Never commit `.env`, exports, or browser data. For GitHub Pages, set `base` in `vite.config.ts` to the repository name and deploy the `dist` folder; each visitor will authenticate with their own Spotify account and keep separate browser-local data.
+Production configuration is in .env.production. It contains only the public Spotify client ID and hosted redirect URI; Spotify PKCE does not use a client secret. Never commit .env, client secrets, tokens, exports, or browser data.
+
+In your Spotify developer app, add this exact Redirect URI:
+
+https://esabramowitz.github.io/Music-hum-study-website/
+
+Keep http://127.0.0.1:5173/ registered too if you use local development. Spotify requires registered redirect URIs to match exactly, including the trailing slash.
+
+Study progress is stored per browser and origin. To move local study data to the hosted site, export a full backup locally and restore it on the hosted site. Connecting Spotify does not transfer study data.

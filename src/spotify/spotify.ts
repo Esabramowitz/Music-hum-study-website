@@ -1,5 +1,5 @@
 import type { Piece, Playlist } from '../models';
-const clientId=import.meta.env.VITE_SPOTIFY_CLIENT_ID as string|undefined; const redirectUri=import.meta.env.VITE_SPOTIFY_REDIRECT_URI || 'http://127.0.0.1:5173/'; const scopes='playlist-read-private playlist-read-collaborative streaming user-read-private user-modify-playback-state';
+const clientId=import.meta.env.VITE_SPOTIFY_CLIENT_ID as string|undefined; const redirectUri=import.meta.env.VITE_SPOTIFY_REDIRECT_URI || new URL(import.meta.env.BASE_URL, window.location.origin).href; const scopes='playlist-read-private playlist-read-collaborative streaming user-read-private user-modify-playback-state';
 declare global { interface Window { Spotify?: any; onSpotifyWebPlaybackSDKReady?: ()=>void; } }
 let deviceId:string|undefined, playerReady:Promise<string>|undefined, stopTimer:number|undefined;
 const b64=(bytes:Uint8Array)=>btoa(String.fromCharCode(...bytes)); const challenge=async(v:string)=>b64(new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(v)))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
