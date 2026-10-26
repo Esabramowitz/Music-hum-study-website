@@ -1,0 +1,5 @@
+import type { Attempt, Piece } from '../models';
+const scorePct=[0,0,25,50,75,100];
+export function mastery(attempts: Attempt[]):number { if(!attempts.length) return 0; const newest=[...attempts].sort((a,b)=>+new Date(b.timestamp)-+new Date(a.timestamp)); let n=0,d=0; newest.forEach((a,i)=>{const w=Math.pow(.8,i); n+=scorePct[a.score]*w; d+=w;}); return Math.round(n/d); }
+export function selectPiece(pieces:Piece[], attempts:Attempt[], previousId?:string, random=Math.random):Piece|undefined { const eligible=pieces.length>1&&previousId?pieces.filter(p=>p.id!==previousId):pieces; if(!eligible.length)return undefined; const weights=eligible.map(p=>{const m=mastery(attempts.filter(a=>a.spotifyTrackId===p.id)); return m>=80?1:1+(80-m)/20;}); const total=weights.reduce((a,b)=>a+b,0); let target=random()*total; for(let i=0;i<eligible.length;i++){target-=weights[i];if(target<=0)return eligible[i];} return eligible.at(-1); }
+export function snippetStart(durationMs:number, desiredMs=60000, random=Math.random):number { return durationMs<=desiredMs?0:Math.floor(random()*(durationMs-desiredMs)); }
