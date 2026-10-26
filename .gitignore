@@ -1,7 +1,16 @@
 node_modules/
 dist/
+coverage/
+.vite/
 .env
 .env.local
+.env.*.local
 *.log
-coverage/
 *.tsbuildinfo
+playwright-report/
+test-results/
+music-humanities-backup*.json
+music-humanities-pieces*.csv
+music-humanities-playlists*.csv
+.DS_Store
+Thumbs.db
