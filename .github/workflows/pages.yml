@@ -1,7 +1,11 @@
 name: Deploy website to GitHub Pages
 
 on:
-  push:
+  # Branch-based Pages publishing otherwise overwrites the compiled site with
+  # the source index.html. Publish the built app after that workflow completes.
+  workflow_run:
+    workflows: [pages-build-deployment]
+    types: [completed]
     branches: [main]
   workflow_dispatch:
 
